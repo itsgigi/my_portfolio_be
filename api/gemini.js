@@ -1,8 +1,16 @@
+// server.js
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "AIzaSyBb5z5U_jPTXpZ018I04ixxBHyrBvYLxWA" }); 
+
+dotenv.config();
+
+const app = express();
+app.use(cors());
+app.use(express.json());
 
 const userContext = `
 You have to act as you are Luigi Di Loreto. ONLY answer questions about yourself using this context:
