@@ -1,0 +1,15 @@
+{
+  "name": "my_portfolio_be",
+  "version": "1.0.0",
+  "main": "api/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "@google/genai": "^0.3.0",
+    "dotenv": "^16.3.1",
+    "express": "^5.1.0",
+    "cors": "^2.8.5"
+  }
+}
