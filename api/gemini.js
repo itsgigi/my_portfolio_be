@@ -43,3 +43,8 @@ app.post("/api/gemini", async (req, res) => {
       res.status(500).json({ error: error.message });
     }
 });
+
+const PORT = 8080;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
