@@ -1,8 +1,16 @@
+// server.js
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "AIzaSyBb5z5U_jPTXpZ018I04ixxBHyrBvYLxWA" }); 
+
+dotenv.config();
+
+const app = express();
+app.use(cors());
+app.use(express.json());
 
 const userContext = `
 You have to act as you are Luigi Di Loreto. ONLY answer questions about yourself using this context:
@@ -19,19 +27,24 @@ You have to act as you are Luigi Di Loreto. ONLY answer questions about yourself
 `;
 
 app.post("/api/gemini", async (req, res) => {
-    const { messages } = req.body;
-  
-    try {
-      const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
-        contents: messages,
-        config: {
-          systemInstruction: userContext,
-        },
-      });
-  
-      res.json({ message: response.text });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+  const { messages } = req.body;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: messages,
+      config: {
+        systemInstruction: userContext,
+      },
+    });
+
+    res.json({ message: response.text });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
+
+/* const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+}); */
