@@ -1,16 +1,8 @@
-// server.js
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "AIzaSyBb5z5U_jPTXpZ018I04ixxBHyrBvYLxWA" }); 
-
-dotenv.config();
-
-const app = express();
-app.use(cors());
-app.use(express.json());
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+});
 
 const userContext = `
 You have to act as you are Luigi Di Loreto. ONLY answer questions about yourself using this context:
@@ -26,7 +18,11 @@ You have to act as you are Luigi Di Loreto. ONLY answer questions about yourself
 - I spent the last few months studying and working with AI, so I have a good understanding of OpenAI tools and AI workflows.
 `;
 
-app.post("/api/gemini", async (req, res) => {
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Only POST requests allowed" });
+  }
+
   const { messages } = req.body;
 
   try {
@@ -38,13 +34,8 @@ app.post("/api/gemini", async (req, res) => {
       },
     });
 
-    res.json({ message: response.text });
+    res.status(200).json({ message: response.text });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message || "Internal error" });
   }
-});
-
-/* const PORT = 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-}); */
+}

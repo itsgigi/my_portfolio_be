@@ -1,11 +1,11 @@
 {
   "name": "my_portfolio_be",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "/api/gemini.js",
   "author": "Luigi Di Loreto",
   "scripts": {
     "dev": "vercel dev",
-    "start": "node server"
+    "start": "node api/gemini"
   },
   "dependencies": {
     "@google/genai": "^0.3.0",
